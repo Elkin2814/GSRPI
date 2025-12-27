@@ -1,0 +1,464 @@
+<div class="container">
+    <div class="">
+        <h2>
+            Revisión de la solicitud de reconocimiento de producción intelectual
+        </h2>
+    </div>
+    <div class="container-form row">
+        <form action="" [formGroup]="registerForm" (submit)="onSubmit()">
+            @if(currentStep === StepsReviewApplication.STEP_1_PERSONAL_INFORMATION_APPLICANT){
+            <div class="">
+                <p class="">
+                    <span class="font-normal">
+                        Por favor, revisa la información del docente solicitante y agrega tu visto bueno junto con
+                        cualquier
+                        observación que consideres necesaria.
+                    </span>
+                </p>
+                <h5 class="">
+                    Datos del docente solicitante
+                </h5>
+            </div>
+            <app-form-body-applicant-teacher [formGroup]="registerForm"
+                [identificationTypeDataList]="identificationTypeDataList" [departmentDataList]="departmentDataList"
+                [typeOfLinkageDataList]="typeOfLinkageDataList">
+            </app-form-body-applicant-teacher>
+            }
+            @else if (currentStep === StepsReviewApplication.STEP_2_APPLICATION_RECOGNITION){
+            <div class="">
+                <p class="mb-3">
+                    <span class="font-normal">
+                        Por favor, revisa la información general de la solicitud y agrega tu visto
+                        bueno junto con cualquier observación que consideres necesaria.
+                    </span>
+                </p>
+                <h5 class=" mt-0">
+                    Datos generales de la solicitud
+                </h5>
+                <div class="grid">
+                    <div class="col-12 sm:col-4 mb-3">
+                        <label for="applicationType" class="block text-primary text-lg font-medium mb-2">
+                            Tipo de solicitud <span class="text-orange-500">*</span>
+                        </label>
+                        <p-select class="p-3" [options]="applicationTypes" [required]="true" [showClear]="true"
+                            formControlName="applicationType" optionValue="key" optionLabel="value" [filter]="true"
+                            filterBy="value" placeholder="Seleccione el tipo de solicitud" class="w-full md:w-56" />
+                        @if (this.registerForm.get('applicationType')?.hasError('required') &&
+                        this.registerForm.get('applicationType')?.touched){
+                        <div class="text-error text-sm mt-1">
+                            Debe seleccionar un tipo de solicitud
+                        </div>
+                        }
+                    </div>
+                    <div class="col-12 sm:col-4 pl-0">
+                        <label for="totalNumberAuthors" class="block text-primary text-md font-medium mb-2">
+                            Número total de autores <span class="text-orange-500">*</span>
+                        </label>
+                        <p-inputnumber inputId="integeronly" formControlName="totalNumberAuthors" class="w-full"
+                            placeholder="Digitar respuesta" />
+                        @if (this.registerForm.get('totalNumberAuthors')?.hasError('required') &&
+                        this.registerForm.get('totalNumberAuthors')?.touched){
+                        <div class="text-error text-sm mt-1">
+                            El número total de autores es requerido
+                        </div>
+                        }
+                    </div>
+                </div>
+                <h5 class=" mt-0">
+                    Datos de la producción y/o reconocimiento
+                </h5>
+                <app-form-body-general-production-data [formGroup]="registerForm"
+                    [publicationMechanismsDataList]="publicationMechanismsDataList">
+                </app-form-body-general-production-data>
+            </div>
+            }
+            @else if (currentStep === StepsReviewApplication.STEP_3_PRODUCTION_BY_TYPE) {
+            <div class="">
+                <p class="mb-3">
+                    <span class="font-normal">
+                        Por favor, revisa la información de la producción intelectual según el tipo seleccionado
+                        y agrega tu visto bueno junto con cualquier observación que consideres necesaria.
+                    </span>
+                </p>
+                <h5 class=" mt-0">
+                    Datos de la solicitud según el tipo de producción seleccionado
+                </h5>
+                <div class="grid">
+                    <div class="col-12 sm:col-6 md:col-4">
+                        <label for="productionType" class="block text-primary text-lg font-medium mb-2">
+                            Tipo producción y/o reconocimiento <span class="text-orange-500">*</span>
+                        </label>
+                        <p-select class="p-3" [options]="productionTypeDataList" [required]="true" [showClear]="true"
+                            formControlName="productionType" optionValue="key" optionLabel="value" [filter]="true"
+                            filterBy="value" placeholder="Seleccione el tipo de producción" class="w-full md:w-56" />
+                        @if (this.registerForm.get('productionType')?.hasError('required') &&
+                        this.registerForm.get('productionType')?.touched){
+                        <div class="text-error text-sm mt-1">
+                            Debe seleccionar un tipo de producción y/o reconocimiento
+                        </div>
+                        }
+                    </div>
+                </div>
+                <app-form-body-specific-production-data-magazine [formGroup]="registerForm"
+                    [articleTypeDataList]="articleTypeDataList" [magazineTypeDataList]="magazineTypeDataList"
+                    [publindexCategoryDataList]="publindexCategoryDataList">
+                </app-form-body-specific-production-data-magazine>
+            </div>
+            }
+            @else if (currentStep === StepsReviewApplication.STEP_4_APPLICATON_RECOGNIZED) {
+            <div class="">
+                <p class="mb-3">
+                    <span class="font-normal">
+                        Por favor, revisa la información de trabajos o publicaciones ya reconocidas relacionadas con la
+                        presente producción y agrega tu visto bueno junto con cualquier observación que consideres
+                        necesaria.
+                    </span>
+                </p>
+                <h5 class=" mt-0">
+                    Trabajos o publicaciones ya reconocidas relacionadas con la presente producción
+                </h5>
+                <p-table #dt1 [value]="applicationsRecognized" [paginator]="true" [rows]="5" [first]="first"
+                    [showCurrentPageReport]="true" [tableStyle]="{ 'min-width': '50rem' }" selectionMode="single"
+                    dataKey="id" [globalFilterFields]="['applicationId', 'applicationTypeCatId', 'production.productionType.name', 
+                'createAt','applicationStatus.name']"
+                    currentPageReportTemplate="Mostrando {first} - {last} de {totalRecords} solicitudes"
+                    (onPage)="pageChange($event)" [rowsPerPageOptions]="[5, 10, 15, 20, 25]" dataKey="id">
+                    <ng-template #caption>
+                        <p-iconfield iconPosition="left">
+                            <p-inputicon>
+                                <i class="pi pi-search"></i>
+                            </p-inputicon>
+                            <input pInputText type="text" [ngStyle]="{ 'width': '70%' }" (input)="search($event)"
+                                placeholder="Buscar..." />
+                        </p-iconfield>
+                    </ng-template>
+                    <ng-template #header>
+                        <tr>
+                            <th class="text-primary" pSortableColumn="applicationId">
+                                Id <p-sortIcon field="applicationId" />
+                            </th>
+                            <th class="text-primary" pSortableColumn="production.workTitle">
+                                Título <p-sortIcon field="production.workTitle" />
+                            </th>
+                            <th class="text-primary" pSortableColumn="production.workTitle">
+                                Resolución <p-sortIcon field="production.workTitle" />
+                            </th>
+                            <th class="text-primary" pSortableColumn="createAt">
+                                Fecha creación <p-sortIcon field="createAt" />
+                            </th>
+                            <th class="text-primary" pSortableColumn="production.workTitle">
+                                Autores <p-sortIcon field="production.workTitle" />
+                            </th>
+                            <th class="text-primary">Acciones</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template #body let-application>
+                        <tr>
+                            <td>{{ application.applicationRecognizedId }}</td>
+                            <td>{{ application.production.title }}</td>
+                            <td>{{ application.resolutionName }}</td>
+                            <td>{{ application.date | date: 'dd/MM/yyyy HH:mm' }}</td>
+                            <td>{{ application.authors }}</td>
+                            <td>
+                                <div class="flex justify-between">
+                                    <button pButton pRipple icon="pi pi-file-check"
+                                        class="p-button-rounded p-button-text">
+                                        Ver detalle
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+            }
+            @else if (currentStep === StepsReviewApplication.STEP_5_DOCUMENTS) {
+            <div class="mb-3">
+                <p class="mb-3">
+                    <span class="font-normal">
+                        Por favor, revisa cada uno de los documentos adjuntos y agrega tu visto bueno junto con
+                        cualquier observación que consideres necesaria.
+                    </span>
+                </p>
+                <h5 class=" mt-0">
+                    Documentos adjuntos a la solicitud
+                </h5>
+                <div class="flex flex-column md:flex-row gap-3">
+                    <div class="card w-full text-center mb-0">
+                        <h5 class="">
+                            Producto
+                        </h5>
+                        <i class="pi pi-file-pdf" style="font-size: 2.5rem"></i>
+                        <div class="flex flex-col gap-2 justify-content-center">
+                            <button pButton pRipple icon="pi pi-eye" class="p-button-rounded p-button-text"
+                                (click)="viewDetailPdf('producto')" type="button">
+                                Ver detalle
+                            </button>
+                            <button pButton pRipple icon="pi pi-download" class="p-button-rounded p-button-text"
+                                type="button" (click)="downloadPdf('producto')">
+                                Descargar
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card w-full text-center">
+                        <h5 class="">
+                            Copia de clasificación/homologación
+                        </h5>
+                        <i class="pi pi-file-pdf" style="font-size: 2.5rem"></i>
+                        <div class="flex flex-col justify-content-center gap-2">
+                            <button pButton pRipple icon="pi pi-eye" class="p-button-rounded p-button-text"
+                                (click)="viewDetailPdf('copia-homologacion')" type="button">
+                                Ver detalle
+                            </button>
+                            <button pButton pRipple icon="pi pi-download" class="p-button-rounded p-button-text"
+                                type="button" (click)="downloadPdf('copia-homologacion')">
+                                Descargar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            }
+        </form>
+        <hr style="border: 1px dashed; border-radius: 5px;">
+        <div class="">
+            <h5 class="">
+                Visto bueno y observaciones
+            </h5>
+            <form action="" [formGroup]="validationForm" (submit)="onSubmit()">
+                <div class="grid">
+                    @if (currentStep === StepsReviewApplication.STEP_1_PERSONAL_INFORMATION_APPLICANT ) {
+                    <div class="col-12 sm:col-12 md:col-12">
+                        <label for="approvalStep1" class="block text-primary text-md font-medium mb-2">
+                            La información es <span class="text-orange-500">*</span>
+                        </label>
+                        <div class="flex flex-row gap-2">
+                            @for (item of approvalDataList; track $index) {
+                            <div class="field-checkbox">
+                                <p-radiobutton [value]="item.key" formControlName="approvalStep1" [styleClass]="
+                                (validationForm.get('approvalStep1')?.hasError('required') && 
+                                validationForm.get('approvalStep1')?.touched ? 'ng-invalid' : '') + 
+                                'ng-dirty'" />
+                                <label [for]="item.key" class="ml-2"> {{ item.value }} </label>
+                            </div>
+                            }
+                        </div>
+                        @if (this.validationForm.get('approvalStep1')?.hasError('required') &&
+                        this.validationForm.get('approvalStep1')?.touched){
+                        <div class="text-error text-sm mt-1">
+                            Debe seleccionar el tipo de vinculación
+                        </div>
+                        }
+                    </div>
+                    <div class="col-12 sm:col-12 md:col-12">
+                        <label for="observationsStep1" class="block text-primary text-md font-medium mb-2">
+                            Observaciones @if(!isValidFormInStep) {<span class="text-orange-500">*</span>}
+                        </label>
+                        <textarea rows="4" placeholder="Sus observaciones ..." cols="50" pTextarea [autoResize]="true"
+                            formControlName="observationsStep1">
+                        </textarea>
+                    </div>
+                    }
+                    @else if (currentStep === StepsReviewApplication.STEP_2_APPLICATION_RECOGNITION) {
+                    <div class="col-12 sm:col-12 md:col-12">
+                        <label for="approvalStep2" class="block text-primary text-md font-medium mb-2">
+                            La información es <span class="text-orange-500">*</span>
+                        </label>
+                        <div class="flex flex-row gap-2">
+                            @for (item of approvalDataList; track $index) {
+                            <div class="field-checkbox">
+                                <p-radiobutton [value]="item.key" formControlName="approvalStep2" [styleClass]="
+                                    (validationForm.get('approvalStep2')?.hasError('required') && 
+                                    validationForm.get('approvalStep2')?.touched ? 'ng-invalid' : '') + 
+                                    'ng-dirty'" />
+                                <label [for]="item.key" class="ml-2"> {{ item.value }} </label>
+                            </div>
+                            }
+                        </div>
+                        @if (this.validationForm.get('approvalStep2')?.hasError('required') &&
+                        this.validationForm.get('approvalStep2')?.touched){
+                        <div class="text-error text-sm mt-1">
+                            Debe seleccionar el tipo de vinculación
+                        </div>
+                        }
+                    </div>
+                    <div class="col-12 sm:col-12 md:col-12">
+                        <label for="observationsStep2" class="block text-primary text-md font-medium mb-2">
+                            Observaciones @if(!isValidFormInStep) {<span class="text-orange-500">*</span>}
+                        </label>
+                        <textarea rows="4" placeholder="Sus observaciones ..." cols="50" pTextarea [autoResize]="true"
+                            formControlName="observationsStep2">
+                            </textarea>
+                    </div>
+                    }
+                    @else if (currentStep === StepsReviewApplication.STEP_3_PRODUCTION_BY_TYPE) {
+                    <div class="col-12 sm:col-12 md:col-12">
+                        <label for="approvalStep3" class="block text-primary text-md font-medium mb-2">
+                            La información es <span class="text-orange-500">*</span>
+                        </label>
+                        <div class="flex flex-row gap-2">
+                            @for (item of approvalDataList; track $index) {
+                            <div class="field-checkbox">
+                                <p-radiobutton [value]="item.key" formControlName="approvalStep3" [styleClass]="
+                                    (validationForm.get('approvalStep3')?.hasError('required') && 
+                                    validationForm.get('approvalStep3')?.touched ? 'ng-invalid' : '') + 
+                                    'ng-dirty'" />
+                                <label [for]="item.key" class="ml-2"> {{ item.value }} </label>
+                            </div>
+                            }
+                        </div>
+                        @if (this.validationForm.get('approvalStep3')?.hasError('required') &&
+                        this.validationForm.get('approvalStep3')?.touched){
+                        <div class="text-error text-sm mt-1">
+                            Debe seleccionar el tipo de vinculación
+                        </div>
+                        }
+                    </div>
+                    <div class="col-12 sm:col-12 md:col-12">
+                        <label for="observationsStep3" class="block text-primary text-md font-medium mb-2">
+                            Observaciones @if(!isValidFormInStep) {<span class="text-orange-500">*</span>}
+                        </label>
+                        <textarea rows="4" placeholder="Sus observaciones ..." cols="50" pTextarea [autoResize]="true"
+                            formControlName="observationsStep3">
+                            </textarea>
+                    </div>
+                    }
+                    @else if (currentStep === StepsReviewApplication.STEP_4_APPLICATON_RECOGNIZED) {
+                    <div class="col-12 sm:col-12 md:col-12">
+                        <label for="approvalStep4" class="block text-primary text-md font-medium mb-2">
+                            La información es <span class="text-orange-500">*</span>
+                        </label>
+                        <div class="flex flex-row gap-2">
+                            @for (item of approvalDataList; track $index) {
+                            <div class="field-checkbox">
+                                <p-radiobutton [value]="item.key" formControlName="approvalStep4" [styleClass]="
+                                    (validationForm.get('approvalStep4')?.hasError('required') && 
+                                    validationForm.get('approvalStep4')?.touched ? 'ng-invalid' : '') + 
+                                    'ng-dirty'" />
+                                <label [for]="item.key" class="ml-2"> {{ item.value }} </label>
+                            </div>
+                            }
+                        </div>
+                        @if (this.validationForm.get('approvalStep4')?.hasError('required') &&
+                        this.validationForm.get('approvalStep4')?.touched){
+                        <div class="text-error text-sm mt-1">
+                            Debe seleccionar el tipo de vinculación
+                        </div>
+                        }
+                    </div>
+                    <div class="col-12 sm:col-12 md:col-12">
+                        <label for="observationsStep4" class="block text-primary text-md font-medium mb-2">
+                            Observaciones @if(!isValidFormInStep) {<span class="text-orange-500">*</span>}
+                        </label>
+                        <textarea rows="4" placeholder="Sus observaciones ..." cols="50" pTextarea [autoResize]="true"
+                            formControlName="observationsStep4">
+                            </textarea>
+                    </div>
+                    }
+                    @else if (currentStep === StepsReviewApplication.STEP_5_DOCUMENTS) {
+                    <div class="col-12 sm:col-12 md:col-12">
+                        <label for="approvalStep5" class="block text-primary text-md font-medium mb-2">
+                            La información es <span class="text-orange-500">*</span>
+                        </label>
+                        <div class="flex flex-row gap-2">
+                            @for (item of approvalDataList; track $index) {
+                            <div class="field-checkbox">
+                                <p-radiobutton [value]="item.key" formControlName="approvalStep5" [styleClass]="
+                                    (validationForm.get('approvalStep5')?.hasError('required') && 
+                                    validationForm.get('approvalStep5')?.touched ? 'ng-invalid' : '') + 
+                                    'ng-dirty'" />
+                                <label [for]="item.key" class="ml-2"> {{ item.value }} </label>
+                            </div>
+                            }
+                        </div>
+                        @if (this.validationForm.get('approvalStep5')?.hasError('required') &&
+                        this.validationForm.get('approvalStep5')?.touched){
+                        <div class="text-error text-sm mt-1">
+                            Debe seleccionar el tipo de vinculación
+                        </div>
+                        }
+                    </div>
+                    <div class="col-12 sm:col-12 md:col-12">
+                        <label for="observationsStep5" class="block text-primary text-md font-medium mb-2">
+                            Observaciones @if(!isValidFormInStep) {<span class="text-orange-500">*</span>}
+                        </label>
+                        <textarea rows="4" placeholder="Sus observaciones ..." cols="50" pTextarea [autoResize]="true"
+                            formControlName="observationsStep5">
+                            </textarea>
+                    </div>
+                    }
+                </div>
+                <div class="">
+                    <p class="mb-3">
+                        <span class="font-bold">Nota:</span>
+                        Las observaciones son obligatorias en caso de que la información sea incorrecta.
+                    </p>
+                </div>
+                <div class="col-12 flex-column sm:col-10 xl:10 flex sm:flex-row gap-2 pl-0">
+                    <button pButton type="button" severity="secondary" pRipple label="Anterior" [disabled]="false"
+                        class="w-full border-round" (click)="enableBeforeValidation()">
+                    </button>
+                    <button pButton pRipple label="Guardar" type="submit" [disabled]="!isValidFormInStep"
+                        class="w-full border-round">
+                    </button>
+                    @if (currentStep === StepsReviewApplication.STEP_5_DOCUMENTS) {
+                    @if (role === RoleNames.CPD_SECRETARY) {
+                    <button pButton pRipple label="Aceptar solicitud" type="button" class="w-full border-round"
+                        (click)="acceptApplication(true)" [disabled]="disabledButtonAcceptApplication">
+                    </button>
+                    <button pButton pRipple label="Devolver solicitud" type="button" class="w-full border-round"
+                        (click)="acceptApplication(false)" [disabled]="!disabledButtonAcceptApplication">
+                    </button>
+                    }
+                    @if(role === RoleNames.CPD_MEMBER) {
+                    <button pButton pRipple label="Recomendar puntos" type="button" class="w-full border-round"
+                        [routerLink]="['../../recomendar-puntos',this.applicationId,
+                        this.responseBodyApplication.teacherApplications?.[0]?.teacherApplicationId, false]"
+                        [disabled]="disabledButtonAcceptApplication">
+                    </button>
+                    }
+                    <!-- CIARP -->
+                    @if(role === RoleNames.CIARP_SECRETARY) {
+                    <button pButton pRipple label="Devolver solicitud" type="button" class="w-full border-round"
+                        (click)="returnApplicationInCiarp()" [disabled]="this.isCorrectValidation">
+                    </button>
+                    <button pButton pRipple label="Validar puntaje" type="button" class="w-full border-round"
+                        [routerLink]="['../../asignar-puntos',this.applicationId,this.responseBodyApplication.teacherApplications?.[0]?.teacherApplicationId,false]"
+                        [disabled]="disabledButtonAcceptApplication">
+                    </button>
+                    }
+                    @if(role === RoleNames.CIARP_MEMBER) {
+                    <button pButton pRipple label="Siguiente" type="button" class="w-full border-round"
+                        [routerLink]="['../../asignar-puntos',this.applicationId,this.responseBodyApplication.teacherApplications?.[0]?.teacherApplicationId,true]"
+                        [disabled]="isDisabledNextStep">
+                    </button>
+                    }
+                    }
+                    @else {
+                    <button pButton pRipple label="Siguiente" type="button" class="w-full border-round"
+                        (click)="enableNextValidation()" [disabled]="isDisabledNextStep">
+                    </button>
+                    }
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Dialog alert -->
+    <p-toast />
+    <p-confirmdialog />
+    <!-- Dialog pdf -->
+    <p-dialog header="Visualizador de PDF" [modal]="true" [(visible)]="isDialogVisible" [style]="{ width: '50rem' }"
+        [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="true">
+        <!-- Template para visualizar un pdf -->
+        <ng-template pTemplate="content">
+            <div class="flex flex-col gap-3">
+                <div class="card w-full text-center mb-0">
+                    <h5 class="">
+                        {{ pdfTitle }}
+                    </h5>
+                    <iframe [src]="pdfPath" width="100%" height="600px"></iframe>
+                </div>
+            </div>
+        </ng-template>
+    </p-dialog>
+</div>

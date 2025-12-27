@@ -1,0 +1,110 @@
+<!-- header -->
+<div class="flex flex-row align-items-center justify-content-center mt-3 my-1 shadow-1">
+    <div class="bg-primary mr-2 px-3 pt-1">
+        <a class="layout-topbar-logo" routerLink="/login">
+            <img src="assets/logo-unicauca.png" alt="logo" class="" style="width: 150px;">
+        </a>
+    </div>
+    <h3>Gestión de Solicitudes de Reconocimiento de Producción Intelectual</h3>
+</div>
+<div class="surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden">
+    <div class="flex flex-column align-items-center justify-content-center">
+        <!-- Login -->
+        <div class="border-round-3xl shadow-5">
+            <!-- style="background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%);"> -->
+            <div class="w-full surface-card py-8 px-5 border-round-3xl sm:px-8">
+                <div class="text-center mb-5">
+                    <h1 class="text-primary">Inicio de sesión</h1>
+                </div>
+                <div>
+                    <form action="" [formGroup]="loginForm" (submit)="onLoginFormSubmitted()">
+                        <!-- <p-iconfield> -->
+                        <div class="">
+                            <label for="username" class="block text-primary text-lg font-medium mb-2">
+                                Correo institucional <span class="text-orange-500">*</span>
+                            </label>
+                            <input id="username" type="text" formControlName="username" placeholder="correo" pInputText
+                                class="w-full md:w-30rem" style="padding:1rem">
+                            <!-- <p-inputicon styleClass="pi pi-spinner pi-spin" style="padding:1rem" /> -->
+                            @if (this.loginForm.get('username')?.hasError('required') &&
+                            this.loginForm.get('username')?.touched){
+                            <div class="text-error text-sm mt-1">
+                                El correo es requerido
+                            </div>
+                            }
+                            @if (this.loginForm.get('username')?.hasError('email') &&
+                            this.loginForm.get('username')?.touched){
+                            <div class="text-error text-sm mt-1">
+                                Ingrese un correo válido
+                            </div>
+                            }
+
+                            <!-- </p-iconfield> -->
+                        </div>
+                        <div class="mt-5">
+                            <label for="password" class="block text-primary font-medium text-lg mb-2">
+                                Contraseña <span class="text-orange-500">*</span>
+                            </label>
+                            <p-password id="password" promptLabel="Ingrese su contraseña" formControlName="password"
+                                placeholder="contraseña" [toggleMask]="true" styleClass=""
+                                inputStyleClass="w-full p-3 md:w-30rem">
+                            </p-password>
+                            @if (this.loginForm.get('password')?.hasError('required') &&
+                            this.loginForm.get('password')?.touched){
+                            <div class="text-error text-sm mt-1">
+                                La contraseña es requerida
+                            </div>
+                            }
+                        </div>
+                        <div class="flex align-items-center justify-content-between mb-5 gap-5 mt-5">
+                            <div class="flex align-items-center">
+                                <p-checkbox id="rememberme1" [binary]="true" styleClass="mr-2"></p-checkbox>
+                                <label for="rememberme1">Recuérdame</label>
+                            </div>
+                            <a class="font-medium no-underline ml-2 text-right cursor-pointer text-primary">
+                                ¿Olvidó su contraseña?
+                            </a>
+                        </div>
+                        <button pButton pRipple [label]="!isLoadingLogin ? 'Iniciar sesión': ''"
+                            [loading]="isLoadingLogin" class="w-full p-3 text-xl border-round">
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Dialog alert -->
+    <p-toast />
+    <p-confirmdialog />
+</div>
+<!-- footer -->
+<hr class="border-1" style="opacity: 20%;">
+<div class="flex flex-column py-5 px-8">
+    <div class="flex flex-row justify-content-between">
+        <div class="">
+            <h3 class="" style="color: var(--text-color);">
+                Universidad del Cauca
+            </h3>
+            <p>NIT.891500319-2</p>
+        </div>
+        <div class="">
+            <div class="layout-footer">
+                <div class="">
+                    2025 | Producción académica | CPD-FIET
+                </div>
+                <div class="">
+                    División de tecnologías de la información y las comunicaciones | Version 1.0.0
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="text-center mt-5">
+        <p>
+            Institución con Acreditación de Alta Calidad por 8 años Resolución MEN 6218 de 2019 -
+            Vigilada MinEducación <br>
+            Politica de Protección de Datos Personales | Política de Seguridad de la Información |
+            Comunícate con nuestro Soporte Técnico
+        </p>
+    </div>
+</div>

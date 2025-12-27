@@ -1,0 +1,153 @@
+<div class="container">
+    <div class="">
+        <h2>¡Bievenido! al Sistema de gestión y trámite de Solicitudes de Reconocimiento de Producción Intelectual</h2>
+    </div>
+    @if (role === RoleNames.CIARP_SECRETARY) {
+    <div class="flex flex-wrap gap-3 justify-content-star">
+        <div class="card flex-grow-1 min-w-20rem text-center mb-0 cursor-pointer border border-primary card-options"
+            (click)="showModalFunctionalityNotAvailable()">
+            <!-- [routerLink]="['revision-solicitudes/listar-solicitudes-revision']" -->
+            <i class="pi pi-users" style="font-size: 2.5rem; color: var(--primary-color)"></i>
+            <h3 class="">
+                Gestionar CIARP
+            </h3>
+        </div>
+        <div class="card flex-grow-1 min-w-20rem text-center mb-0 cursor-pointer border border-primary card-options"
+            [routerLink]="['revision-solicitudes/listar-solicitudes-revision-ciarp']">
+            <i class="pi pi-list-check" style="font-size: 2.5rem; color: var(--primary-color)"></i>
+            <h3 class="">
+                Listar solicitudes
+            </h3>
+        </div>
+        <div class="card flex-grow-1 min-w-20rem text-center mb-0 cursor-pointer border border-primary card-options"
+            [routerLink]="['/solicitudes']">
+            <i class="pi pi-file-pdf" style="font-size: 2.5rem; color: var(--primary-color)"></i>
+            <h3 class="">
+                Guía de puntajes
+            </h3>
+        </div>
+    </div>
+    }
+    @else if (role === RoleNames.CIARP_MEMBER) {
+    <div class="flex flex-wrap gap-3 justify-content-star">
+        <div class="card flex-grow-1 min-w-20rem text-center mb-0 cursor-pointer border border-primary card-options"
+            [routerLink]="['revision-solicitudes/listar-solicitudes-revision-comite-ciarp']">
+            <i class="pi pi-list-check" style="font-size: 2.5rem; color: var(--primary-color)"></i>
+            <h3 class="">
+                Listar solicitudes
+            </h3>
+        </div>
+        <div class="card flex-grow-1 min-w-20rem text-center mb-0 cursor-pointer border border-primary card-options"
+            [routerLink]="['/solicitudes']">
+            <i class="pi pi-file-pdf" style="font-size: 2.5rem; color: var(--primary-color)"></i>
+            <h3 class="">
+                Guía de puntajes
+            </h3>
+        </div>
+    </div>
+    }
+    @else if (role === RoleNames.ADMIN_CIARP) {
+    <div class="flex flex-wrap gap-3 justify-content-start">
+        <div class="card flex-grow-1 min-w-20rem text-center mb-0 cursor-pointer border border-primary card-options"
+            (click)="showModalFunctionalityNotAvailable()">
+            <!-- [routerLink]="['configuracion-sistema/gestionar-ciarp']" -->
+            <i class="pi pi-list-check" style="font-size: 2.5rem; color: var(--primary-color)"></i>
+            <h3>Listar integrantes CIARP</h3>
+        </div>
+
+        <div class="card flex-grow-1 min-w-20rem text-center mb-0 cursor-pointer border border-primary card-options"
+            [routerLink]="['configuracion-sistema/registrar-ciarp']">
+            <i class="pi pi-file-pdf" style="font-size: 2.5rem; color: var(--primary-color)"></i>
+            <h3>Registrar miembros CIARP</h3>
+        </div>
+
+        <div class="card flex-grow-1 min-w-20rem text-center mb-0 cursor-pointer border border-primary card-options"
+            [routerLink]="['configuracion-sistema/registrar-secretaria-ciarp']">
+            <i class="pi pi-file-pdf" style="font-size: 2.5rem; color: var(--primary-color)"></i>
+            <h3>Registrar secretaria CIARP</h3>
+        </div>
+    </div>
+    }
+    @else if (role === RoleNames.TEACHER) {
+    <div class="flex flex-wrap gap-3 justify-content-star">
+        <div class="card flex-grow-1 min-w-20rem text-center mb-0 cursor-pointer border border-primary card-options"
+            [routerLink]="['solicitudes-reconocimiento/crear-solicitud']">
+            <i class="pi pi-file-plus" style="font-size: 2.5rem; color: var(--primary-color)"></i>
+            <h3 class="">
+                Crear solicitud
+            </h3>
+        </div>
+        <div class="card flex-grow-1 min-w-20rem text-center mb-0 cursor-pointer border border-primary card-options"
+            [routerLink]="['solicitudes-reconocimiento/listar-solicitudes']">
+            <i class="pi pi-list-check" style="font-size: 2.5rem; color: var(--primary-color)"></i>
+            <h3 class="">
+                Listar solicitudes
+            </h3>
+        </div>
+    </div>
+    }
+    @else if (role === RoleNames.CPD_SECRETARY) {
+    <div class="flex flex-wrap gap-3 justify-content-star">
+        <div class="card flex-grow-1 min-w-20rem text-center mb-0 cursor-pointer border border-primary card-options"
+            [routerLink]="['revision-solicitudes/listar-solicitudes-revision']">
+            <i class="pi pi-list-check" style="font-size: 2.5rem; color: var(--primary-color)"></i>
+            <h3 class="">
+                Listar solicitudes
+            </h3>
+        </div>
+        <div class="card flex-grow-1 min-w-20rem text-center mb-0 cursor-pointer border border-primary card-options"
+            [routerLink]="['/solicitudes']">
+            <i class="pi pi-file-pdf" style="font-size: 2.5rem; color: var(--primary-color)"></i>
+            <h3 class="">
+                Guía de puntajes
+            </h3>
+        </div>
+    </div>
+    }
+    @else if (role === RoleNames.CPD_MEMBER) {
+    <div class="flex flex-wrap gap-3 justify-content-star">
+        <div class="card flex-grow-1 min-w-20rem text-center mb-0 cursor-pointer border border-primary card-options"
+            [routerLink]="['revision-solicitudes/listar-solicitudes-revision-comite']">
+            <i class="pi pi-list-check" style="font-size: 2.5rem; color: var(--primary-color)"></i>
+            <h3 class="">
+                Listar solicitudes
+            </h3>
+        </div>
+        <div class="card flex-grow-1 min-w-20rem text-center mb-0 cursor-pointer border border-primary card-options"
+            [routerLink]="['/solicitudes']">
+            <i class="pi pi-file-pdf" style="font-size: 2.5rem; color: var(--primary-color)"></i>
+            <h3 class="">
+                Guía de puntajes
+            </h3>
+        </div>
+    </div>
+    }
+    @else if (role === RoleNames.CPD_PRESIDENT) {
+    <div class="flex flex-wrap gap-3 justify-content-star">
+        <div class="card flex-grow-1 min-w-20rem text-center mb-0 cursor-pointer border border-primary card-options"
+            [routerLink]="['revision-solicitudes/listar-solicitudes-revision-comite']">
+            <i class="pi pi-list-check" style="font-size: 2.5rem; color: var(--primary-color)"></i>
+            <h3 class="">
+                Listar solicitudes
+            </h3>
+        </div>
+        <div class="card flex-grow-1 min-w-20rem text-center mb-0 cursor-pointer border border-primary card-options"
+            [routerLink]="['/solicitudes']">
+            <i class="pi pi-file-pdf" style="font-size: 2.5rem; color: var(--primary-color)"></i>
+            <h3 class="">
+                Guía de puntajes
+            </h3>
+        </div>
+    </div>
+    }
+    @else {
+    <div class="flex flex-column mb-3 py-2">
+        <span class="text-primary mb-1">
+            Aquí podrás realizar el trámite de tu solicitud de reconocimiento de producción intelectual
+        </span>
+    </div>
+    }
+</div>
+<!-- Dialog alert -->
+<p-toast />
+<p-confirmdialog />
