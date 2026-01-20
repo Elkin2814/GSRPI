@@ -38,4 +38,4 @@ jobs:
           file: Dockerfile
           push: true
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/GSRPI-frontend:${{ github.ref == 'refs/heads/main' && 'latest' || 'dev' }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/gsrpi-frontend:${{ github.ref == 'refs/heads/main' && 'latest' || 'dev' }}
