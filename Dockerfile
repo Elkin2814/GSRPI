@@ -15,7 +15,7 @@ FROM nginx:1.27-alpine
 RUN rm -rf /usr/share/nginx/html/*
 
 # Copiar SOLO el browser build
-COPY --from=build /app/dist/GSRPI/browser /usr/share/nginx/html
+COPY --from=build /app/dist/gsrpi/browser /usr/share/nginx/html
 
 # Copiar configuración de Nginx
 COPY nginx.conf /etc/nginx/conf.d/default.conf 
