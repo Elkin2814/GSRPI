@@ -9,7 +9,7 @@ COPY . .
 RUN npm run build -- --configuration production
 
 # Etapa 2: runtime
-FROM nginx:1.27-alpine
+FROM nginx:alpine
 
 # Limpiar el contenido por defecto de Nginx
 RUN rm -rf /usr/share/nginx/html/*
