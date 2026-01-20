@@ -7,10 +7,10 @@ import { Login, LoginError, LoginResponse, LoginSuccess } from './login/types/lo
 import { BehaviorSubject, Observable, catchError, from, map, of, switchMap, tap, throwError } from 'rxjs';
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { IS_PUBLIC } from './auth.interceptor';
-import ENVIRONMENTS from '../../environments/config';
 import { AuthChangeEvent, createClient, Session, SupabaseClient } from '@supabase/supabase-js'
 import { UserManagementUseCase } from '../user-management/domain/usecase/user-management-usecase';
 import { UserDataSession } from './login/interfaces/models/user-data-session.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -40,18 +40,18 @@ export class AuthService {
   private readonly CONTEXT = { context: new HttpContext().set(IS_PUBLIC, true) };
 
   constructor() {
-    this.supabase = createClient(ENVIRONMENTS.BASE_URL_SUPABASE,
-      ENVIRONMENTS.PUBLIC_API_KEY_SUPABASE,
-      // {
-      // auth: {
-      //   storage: sessionStorage, //Se almacena la sesión en el almacenamiento de sesión del navegador y no en el localstorage
-      //   autoRefreshToken: true,
-      //   persistSession: true,
-      //   detectSessionInUrl: true, // Detectar la sesión en la URL (por ejemplo, para autenticación de proveedores externos)
-      // }
-      // }
-    );
-    this.initializeAuthState();
+    // this.supabase = createClient(environment.apiUrl,
+    //   ENVIRONMENTS.PUBLIC_API_KEY_SUPABASE,
+    //   // {
+    //   // auth: {
+    //   //   storage: sessionStorage, //Se almacena la sesión en el almacenamiento de sesión del navegador y no en el localstorage
+    //   //   autoRefreshToken: true,
+    //   //   persistSession: true,
+    //   //   detectSessionInUrl: true, // Detectar la sesión en la URL (por ejemplo, para autenticación de proveedores externos)
+    //   // }
+    //   // }
+    // );
+    //this.initializeAuthState();
   }
 
   private async initializeAuthState() {
