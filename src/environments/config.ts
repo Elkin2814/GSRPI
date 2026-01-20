@@ -1,4 +1,4 @@
-import { ENVIRONMENT } from "./environment";
+import { environment } from "./environment";
 
 const base_url_api_gsrpi = ENVIRONMENT.BASE_URL_API_GSRPI;
 
