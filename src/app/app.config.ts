@@ -1,4 +1,10 @@
-import { APP_INITIALIZER, ApplicationConfig, importProvidersFrom, LOCALE_ID, provideZoneChangeDetection } from '@angular/core';
+import {
+  APP_INITIALIZER,
+  ApplicationConfig,
+  importProvidersFrom,
+  LOCALE_ID,
+  provideZoneChangeDetection,
+} from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
@@ -24,7 +30,8 @@ import { loadingInterceptor } from './auth/loading.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes),
+    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideRouter(routes),
     provideAnimationsAsync(),
     provideMarkdown(),
     provideAnimations(),
@@ -35,18 +42,18 @@ export const appConfig: ApplicationConfig = {
       theme: {
         preset: GsrpiPreset,
         options: {
-          darkModeSelector: false || 'none'
-        }
+          darkModeSelector: false || 'none',
+        },
       },
     }),
 
-    //Auth 
+    //Auth
     importProvidersFrom([
       //Configuracion JWT
       JwtModule.forRoot({
         config: {
-          tokenGetter: () => localStorage.getItem('accessToken')
-        }
+          tokenGetter: () => localStorage.getItem('accessToken'),
+        },
       }),
     ]),
     //Para que se ejecute el refresh token al iniciar la aplicacion
@@ -60,10 +67,15 @@ export const appConfig: ApplicationConfig = {
     //Configuracion de la inyeccion de dependencias para el desacoplamiento de la capa de infraestructura
     { provide: UserGateway, useClass: UserManagementService },
     { provide: SystemConfigurationGateway, useClass: SystemConfigService },
-    { provide: ApplicationsRecognitionGateway, useClass: ApplicationManagementService },
-    { provide: ReviewApplicationsGateway, useClass: ReviewApplicationsManagementService },
-
-  ]
+    {
+      provide: ApplicationsRecognitionGateway,
+      useClass: ApplicationManagementService,
+    },
+    {
+      provide: ReviewApplicationsGateway,
+      useClass: ReviewApplicationsManagementService,
+    },
+  ],
 };
 
 export function initializerFactory(authService: AuthService) {

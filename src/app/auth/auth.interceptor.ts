@@ -1,4 +1,8 @@
-import { HttpContextToken, HttpInterceptorFn, HttpRequest } from '@angular/common/http';
+import {
+  HttpContextToken,
+  HttpInterceptorFn,
+  HttpRequest,
+} from '@angular/common/http';
 import { inject } from '@angular/core';
 import { AuthService } from './auth.service';
 import { switchMap } from 'rxjs/operators';
@@ -14,24 +18,22 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   if (authService.isAuthenticated()) {
     const authRequest = addAuthorizationHeader(req);
     return next(authRequest);
-
   } else {
     return authService.refreshSession().pipe(
       switchMap(() => {
         const authRequest = addAuthorizationHeader(req);
         return next(authRequest);
-      })
+      }),
     );
-    
   }
 };
 
 const addAuthorizationHeader = (req: HttpRequest<any>) => {
-  const token = localStorage.getItem('sb-bleayfxzpykreishpdvw-auth-token');
+  const token = sessionStorage.getItem('accessToken');
   const tokenFormattedJson = JSON.parse(token ?? '{}');
 
   return req.clone({
-    headers: req.headers.set('Authorization', `Bearer ${tokenFormattedJson.access_token}`)
+    headers: req.headers.set('Authorization', `Bearer ${token ?? ''}`),
   });
 };
 
